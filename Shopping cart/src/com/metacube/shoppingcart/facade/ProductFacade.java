@@ -4,19 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import com.metacube.shoppingcart.dao.InMemoryProductDao;
-import com.metacube.shoppingcart.dao.ProductFactory;
-import com.metacube.shoppingcart.dao.db;
-import com.metacube.shoppingcart.dao.status;
+import com.metacube.shoppingcart.dao.*;
 import com.metacube.shoppingcart.entity.Product;
 
-
+/**
+ * All the business logic for the Product resides here
+ * (Singleton class)
+ * 
+ * @author Amit Sharma 
+ *
+ */
 
 public class ProductFacade {
 	private static ProductFacade obj;
 	
-	InMemoryProductDao inmemorydao =(InMemoryProductDao) ProductFactory.getInstance(db.InMemory);
-	
+	InMemoryProductDao objectDao =(InMemoryProductDao) Factory.getInstance(EntityType.Product, DataBase.InMemory);
+	//Singleton object creation
 	public static ProductFacade getInstance() {
 		if (obj == null) {
 			obj = new ProductFacade();
@@ -26,35 +29,65 @@ public class ProductFacade {
 	}
 	
 	private ProductFacade() {}
-	
+	//ends
+	/**
+	 * Function to return all the products in a list
+	 * @return
+	 */
 	public List<Product> getAll(){
 		List<Product> list = new ArrayList<>();
-		for(Entry<Integer, Product> e: inmemorydao.getAll().entrySet()){
+		for(Entry<Integer, Product> e: objectDao.getAll().entrySet()){
 			list.add((Product)e.getValue());
 		}
 		return list;
 	}
-
-	public status addProduct(Product product) {
-		inmemorydao.addProduct(product);
-			return status.Product_added;
+	/**
+	 * Returns the product of required Id 
+	 * @param productId
+	 * @return
+	 */
+	public Product getProduct(int productId){
+		return objectDao.getAll().get(productId);
 	}
 	
-	public status removeProduct(int productId) {
-		if( inmemorydao.getAll().containsKey(productId) ){
-			inmemorydao.removeProduct(productId);;
-			return status.Product_removed;
+	/**
+     * Add a new product in the memory
+     * @param product
+     * @return
+     */
+	public OperationStatus addProduct(Product product) {
+		objectDao.addProduct(product);
+			return OperationStatus.Product_added;
+	}
+	
+	/**
+	 * To remove the product of given Id
+	 * @param productId
+	 * @return
+	 */
+	public OperationStatus removeProduct(int productId) {
+		if( objectDao.getAll().containsKey(productId) ){
+			objectDao.removeProduct(productId);
+			return OperationStatus.Product_removed;
 		} else {
-			return status.No_such_product_found;
+			return OperationStatus.No_such_product_found;
 		}
 	}
 	
-	public status updateProduct(int productId, String productName, float price ){
-		if(inmemorydao.getAll().containsKey(productId)){
-			inmemorydao.updateProduct(productId, productName, price);
-			return status.Update_successfull;
+	/**
+	 * To update the product name and price of 
+	 * given Product id
+	 * @param productId
+	 * @param productName
+	 * @param price
+	 * @return
+	 */
+	public OperationStatus updateProduct(int productId, String productName, float price ){
+		if(objectDao.getAll().containsKey(productId)){
+			objectDao.updateProduct(productId, productName, price);
+			return OperationStatus.Update_successfull;
 		} else {
-			return status.No_such_product_found;
+			return OperationStatus.No_such_product_found;
 		}
 	}
 }
