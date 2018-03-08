@@ -3,17 +3,24 @@ package com.metacube.shoppingcart.entity;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Shopping Cart class to initialise the shopping cart for the user
+ * 
+ * @author Amit Sharma
+ *
+ */
 public class ShoppingCart {
 
-	String userId;
+	String userID;
 	Map<Product, Integer> items = new HashMap<>();
 	float totPrice;
 	
+	/* Getters and Setters for all data members */
 	public String getUserId() {
-		return userId;
+		return userID;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setUserId(String userID) {
+		this.userID = userID;
 	}
 	public Map<Product, Integer> getItems() {
 		return items;

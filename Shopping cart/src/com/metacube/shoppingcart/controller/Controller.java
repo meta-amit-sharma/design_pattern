@@ -9,46 +9,81 @@ import com.metacube.shoppingcart.entity.User;
 import com.metacube.shoppingcart.facade.ProductFacade;
 import com.metacube.shoppingcart.facade.UserFacade;
 
+
+/**
+ * Controller to add user or product to memory (handles function calls and acts as a mediator between input and processing)
+ * 
+ * @author Amit Sharma 
+ *
+ * @param <T>
+ */
 public class Controller<T> {
 	ProductFacade productFacade = ProductFacade.getInstance();
 	UserFacade userFacade = UserFacade.getInstance();
 	
-	public OperationStatus add(EntityType e,T item){
-		if(e == EntityType.Product){
-			return productFacade.addProduct((Product)item);
-		} else if (e == EntityType.User) {
-			return userFacade.addUser((User)item);
+	/**
+	 * gives a call to add either a user or a product based on the input received
+	 * 
+	 * @param entity
+	 * @param item
+	 * @return
+	 */
+	public OperationStatus add (EntityType entity, T item){
+		if(entity == EntityType.Product) {
+			return productFacade.addProduct ( (Product) item);
+		} else if (entity == EntityType.User) {
+			return userFacade.addUser ( (User) item);
 		}
 		return null;
 	}
 	
+	/**
+	 * gives a call to return the list of either products or users based on the input
+	 * 
+	 * @param entity
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
-	public List<T> getAll(EntityType e){
-		if(e == EntityType.Product){
-			return (List<T>) productFacade.getAll();
-		}else if(e == EntityType.User){
-			return (List<T>) userFacade.getAll();
+	public List<T> getAll (EntityType entity) {
+		if (entity == EntityType.Product) {
+			return (List<T>) productFacade.getAll ();
+		}else if(entity == EntityType.User) {
+			return (List<T>) userFacade.getAll ();
 		}
 		return null;	
 	}
 	
-	public OperationStatus remove(EntityType e, T id){
-		if(e == EntityType.Product){
-			return productFacade.removeProduct((int)id);
-		}else if(e == EntityType.User){
-			return userFacade.removeUser((String)id);
+	/**
+	 * gives a call to remove either product or user based on the input
+	 * 
+	 * @param entity
+	 * @param id
+	 * @return
+	 */
+	public OperationStatus remove (EntityType entity, T id) {
+		if(entity == EntityType.Product){
+			return productFacade.removeProduct ( (int) id);
+		} else if (entity == EntityType.User) {
+			return userFacade.removeUser ( (String) id);
 		}
 		return null;
 	}
 
-	public OperationStatus update(EntityType e, T id, T name, T xyz) {
-		if(e == EntityType.Product){
-			return productFacade.updateProduct((int)id,(String)name,(float)xyz);
-		}else if(e == EntityType.User){
-			return userFacade.updateUser((String)id,(String)name,(String)xyz);
+	/**
+	 * gives a call to update either product or user based on the input
+	 * 
+	 * @param entity
+	 * @param id
+	 * @param name
+	 * @param xyz
+	 * @return
+	 */
+	public OperationStatus update (EntityType entity, T id, T name, T xyz) {
+		if(entity == EntityType.Product) {
+			return productFacade.updateProduct ( (int) id, (String) name, (float) xyz);
+		}else if(entity == EntityType.User) {
+			return userFacade.updateUser ( (String) id, (String) name, (String) xyz);
 		}
 		return null;
 	}
-	
-	
 }

@@ -109,6 +109,11 @@ public class Input {
 		ShoppingCart cart = new ShoppingCart();
 		cartControl.newCart(uid, cart);
 		do{
+			System.out.println("Available products are:");
+			for(Object obj: control.getAll(EntityType.Product)){
+				Product s = (Product)obj;
+				System.out.println("Id= "+s.getId()+" name= "+s.getName()+" price= "+s.getPrice());
+			}
 			System.out.println("Your cart:");
 			if(cartControl.getList(user).size() > 0 ){
 			displayCart(cartControl.getList(user));
@@ -119,6 +124,7 @@ public class Input {
 			System.out.println("1.Add product");
 			System.out.println("2.Remove product");
 			System.out.println("3.Checkout");
+			System.out.println("4.Return without Checkout");
 			choice = input.nextInt();
 			switch(choice){
 			case 1:
@@ -134,6 +140,8 @@ public class Input {
 				break;
 			case 3:
 				cartControl.removeCart(uid);
+				return;
+			case 4:
 				return;
 			default:
 				System.out.println("Enter valid choice");
