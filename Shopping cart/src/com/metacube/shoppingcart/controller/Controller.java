@@ -2,27 +2,53 @@ package com.metacube.shoppingcart.controller;
 
 import java.util.List;
 
-import com.metacube.shoppingcart.dao.status;
+import com.metacube.shoppingcart.dao.EntityType;
+import com.metacube.shoppingcart.dao.OperationStatus;
 import com.metacube.shoppingcart.entity.Product;
+import com.metacube.shoppingcart.entity.User;
 import com.metacube.shoppingcart.facade.ProductFacade;
+import com.metacube.shoppingcart.facade.UserFacade;
 
-public class Controller {
+public class Controller<T> {
 	ProductFacade productFacade = ProductFacade.getInstance();
+	UserFacade userFacade = UserFacade.getInstance();
 	
-	
-	public status addProduct(Product product){
-		return productFacade.addProduct(product);
+	public OperationStatus add(EntityType e,T item){
+		if(e == EntityType.Product){
+			return productFacade.addProduct((Product)item);
+		} else if (e == EntityType.User) {
+			return userFacade.addUser((User)item);
+		}
+		return null;
 	}
 	
-	public List<Product> getAll(){
-		return productFacade.getAll();
+	@SuppressWarnings("unchecked")
+	public List<T> getAll(EntityType e){
+		if(e == EntityType.Product){
+			return (List<T>) productFacade.getAll();
+		}else if(e == EntityType.User){
+			return (List<T>) userFacade.getAll();
+		}
+		return null;	
 	}
 	
-	public status removeProduct(int productId){
-		return productFacade.removeProduct(productId);
+	public OperationStatus remove(EntityType e, T id){
+		if(e == EntityType.Product){
+			return productFacade.removeProduct((int)id);
+		}else if(e == EntityType.User){
+			return userFacade.removeUser((String)id);
+		}
+		return null;
 	}
 
-	public status updateProduct(int id, String name, float price) {
-		return productFacade.updateProduct(id,name,price);
+	public OperationStatus update(EntityType e, T id, T name, T xyz) {
+		if(e == EntityType.Product){
+			return productFacade.updateProduct((int)id,(String)name,(float)xyz);
+		}else if(e == EntityType.User){
+			return userFacade.updateUser((String)id,(String)name,(String)xyz);
+		}
+		return null;
 	}
+	
+	
 }

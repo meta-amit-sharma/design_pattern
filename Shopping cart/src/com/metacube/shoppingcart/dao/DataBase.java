@@ -1,10 +1,5 @@
 package com.metacube.shoppingcart.dao;
 
-
-
-
-public interface BaseDao {
-
-	
-	
+public enum DataBase {
+	InMemory , Sql;
 }
